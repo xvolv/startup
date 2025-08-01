@@ -2,25 +2,17 @@ import SearchForm from "../../components/SearchForm";
 import Link from "next/link";
 import Image from "next/image";
 import StartupCard from "@/components/StartupCard";
+import { client } from "@/sanity/lib/client";
+import { STARTUPS_QUERY } from "@/sanity/lib/quries";
 export default async function Home({
   searchParams,
 }: {
   searchParams: Promise<{ query: string }>;
 }) {
   const query = (await searchParams).query;
-  const posts = [
-    {
-      _createdAt: new Date(),
-      views: 55,
-      author: { _id: "1", name: "elon musk" },
-      _id: "1",
-      title: "we robots",
-      catagory: "robots",
-      description: "this is description",
-      image:
-        "https://images.unsplash.com/photo-1511485977113-f34c92461ad9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-    },
-  ];
+  const posts = await client.fetch(STARTUPS_QUERY);
+  console.log(JSON.stringify(posts, null, 2));
+
   return (
     <>
       <section className="pink_container">
